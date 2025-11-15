@@ -16,7 +16,7 @@ public class TreeUtilities<E extends Comparable<E>> implements TU<E>{
     }
 //----------------------------------------------------------------------------
     //#2
-    public List<E> efficientInOrder(Node<E> node){//only created one ArrayList
+    public List<E> efficientInOrder(Node<E> node){//only created one ArrayList, high efficiency.
         List<E> list = new ArrayList<>();
         efficientInOrderHelper(node,list);
         return list;
@@ -30,7 +30,33 @@ public class TreeUtilities<E extends Comparable<E>> implements TU<E>{
         efficientInOrderHelper(node.right,list);
     }
 //----------------------------------------------------------------------------
-    public static <E> int height(Node<E> n){
-
+    public int height(Node<E> n){
+        if(n == null){
+            return -1;
+        }
+        return 1+Math.max(height(n.left),height(n.right));// only accumulate the higher value.
     }
+//-----------------------------------------------------------------------------
+    public BinarySearchTree<E> intoBalanced(BinarySearchTree<E> bst){
+        if(bst.getRoot() == null){
+            return new BinarySearchTree<>();
+        }
+        List<E> inordered = inOrder(bst.getRoot());
+        Node<E> newRootNode = intoBalancedHelper(inordered,0,inordered.size()-1);
+        BinarySearchTree<E> newBst = new BinarySearchTree<>();
+        newBst.setRoot(newRootNode);// remember to assign the "root" and the "size".
+        newBst.setSize(bst.size());// go back and read the BinarySearchTree.java to see how it is constructed.
+        return newBst;
+    }
+    private Node<E> intoBalancedHelper(List<E> list,int left, int right){
+        if(left > right){// this is reasonable. When nothing left the child of the current node is null! We just assign null to its child.
+            return null;
+        }
+        int mid = left + (right - left)/2;
+        Node<E> n = new Node<>(list.get(mid));//each recursion will start a new root.
+        n.left = intoBalancedHelper(list, left, mid - 1);
+        n.right = intoBalancedHelper(list, mid + 1, right);
+        return n;
+    }
+//-----------------------------------------------------------------------------
 }

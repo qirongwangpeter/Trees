@@ -1,12 +1,23 @@
 package support.trees;
 public class BinarySearchTree<E extends Comparable<E>> implements BST<E>{
-    Node<E> root;
-    int size;
+    private Node<E> root;
+    private int size;
+
     public BinarySearchTree(){
         size = 0;
+        root = null;
+    }
+    public Node<E> getRoot(){
+        return root;
+    }
+    public void setRoot(Node<E> n){
+        root = n;
     }
     public int size(){
         return size;
+    }
+    public void setSize(int s){
+        size = s;
     }
     public Node<E> find(E e, Node<E> n){
         if(n == null){
