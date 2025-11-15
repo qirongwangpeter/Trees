@@ -14,9 +14,9 @@ public class BinarySearchTree<E extends Comparable<E>> implements BST<E>{
         }else if(n.data.equals(e)){
             return n;
         }else if(e.compareTo(n.data)< 0){
-            return find(e,n.left);
+            return find(e,n.left); // easy to forget to write return.
         }else{
-            return find(e,n.right);
+            return find(e,n.right);// easy to forget to write return.
         }
     }
     public Node<E> find(E e){
@@ -28,14 +28,14 @@ public class BinarySearchTree<E extends Comparable<E>> implements BST<E>{
     public void add(E e){
         if(root == null){
             root = new Node<E>(e);
-            root.parent = null;//not necessary but just to clearify
+            root.parent = null;//not necessary but just to clearify.
             size++;
             return;
         }
         add(e,root);
     }
-    private void add(E e, Node<E> n){
-        if(e.equals(n.data)){
+    private void add(E e, Node<E> n){ //remember n is a variable pointed to the root.
+        if(e.equals(n.data)){         //do not just reassign the Node to n or you do nothing!!!
             n.data = e;
             return;
         }
@@ -57,7 +57,7 @@ public class BinarySearchTree<E extends Comparable<E>> implements BST<E>{
             }
         }
     }
-    private void splice(Node<E> n){
+    private void splice(Node<E> n){// means just remove Node n from the tree
         if(n == null){
             return;
         }
@@ -69,15 +69,15 @@ public class BinarySearchTree<E extends Comparable<E>> implements BST<E>{
         if(n.left != null){
             c = n.left;
         }else{
-            c = n.right;
+            c = n.right; // also if n.right is null, c is null.
         }
         if(n == root){
             root = c;
-            p = null;
+            p = null;// will be assigned in the end.
         }else{
             p = n.parent;
             if(p.left == n){//p.left != null won't work here!!!
-                p.left = c;
+                p.left = c; //(What if p has two children?) one of the children could has one child and thus using splice!
             }else{
                 p.right = c;
             }
@@ -93,7 +93,7 @@ public class BinarySearchTree<E extends Comparable<E>> implements BST<E>{
         }
         Node<E> successor;
         E toReturn = n.data;
-        if(n.left == null || n.right==null){
+        if(n.left == null || n.right==null){ //easy to mess up the logic here!
             splice(n);
         }else{
             successor = n.right;
