@@ -1,5 +1,4 @@
 package support.trees;
-import java.lang.Exception;
 public class BinarySearchTree<E extends Comparable<E>> implements BST<E>{
     Node<E> root;
     int size;
@@ -9,17 +8,16 @@ public class BinarySearchTree<E extends Comparable<E>> implements BST<E>{
     public int size(){
         return size;
     }
-    public Node<E> find(E e, Node<E> root){
-        if(root == null){
+    public Node<E> find(E e, Node<E> n){
+        if(n == null){
             return null;
-        }else if(root.data.equals(e)){
-            return root;
-        }else if(e.compareTo(root.data)< 0){
-            find(e,root.left);
+        }else if(n.data.equals(e)){
+            return n;
+        }else if(e.compareTo(n.data)< 0){
+            return find(e,n.left);
         }else{
-            find(e,root.right);
+            return find(e,n.right);
         }
-        return null;//not neccessary
     }
     public Node<E> find(E e){
         return find(e,root);
@@ -29,24 +27,31 @@ public class BinarySearchTree<E extends Comparable<E>> implements BST<E>{
     }
     public void add(E e){
         if(root == null){
-            root = new Node<>(e);
+            root = new Node<E>(e);
             size++;
             return;
         }
         add(e,root);
     }
-    private void add(E e,Node<E> n){
-        if(n == null){
-            n = new Node<>(e);
-            size++;
-        }
-        if(n.data.equals(e)){
+    private void add(E e, Node<E> n){
+        if(e.equals(n.data)){
             n.data = e;
+            return;
         }
-        if(n.data.compareTo(e) < 0){
-            add(e,n.left);
+        if(e.compareTo(n.data) < 0){
+            if(n.left == null){
+                n.left = new Node<E>(e);
+                size++;
+            }else{
+                add(e,n.left);
+            }
         }else{
-            add(e,n.right);
+            if(n.right == null){
+                n.right = new Node<E>(e);
+                size++;
+            }else{
+                add(e,n.right);
+            }
         }
     }
     public void splice(Node<E> n){
