@@ -55,9 +55,13 @@ public class TreeUtilities<E extends Comparable<E>> implements TU<E>{
         int mid = left + (right - left)/2;
         Node<E> n = new Node<>(list.get(mid));//each recursion will start a new root.
         n.left = intoBalancedHelper(list, left, mid - 1);
-        n.left.parent = n;
+        if(n.left != null){//clear logic of avoiding null pointer exception!
+            n.left.parent = n;
+        }//no need to set the root's parent.(first recursion)
         n.right = intoBalancedHelper(list, mid + 1, right);
-        n.right.parent = n;
+        if(n.right != null){// same here!
+            n.right.parent = n;
+        }
         return n;
     }
 //-----------------------------------------------------------------------------
