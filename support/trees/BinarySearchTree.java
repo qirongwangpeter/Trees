@@ -28,6 +28,7 @@ public class BinarySearchTree<E extends Comparable<E>> implements BST<E>{
     public void add(E e){
         if(root == null){
             root = new Node<E>(e);
+            root.parent = null;//not necessary but just to clearify
             size++;
             return;
         }
@@ -41,6 +42,7 @@ public class BinarySearchTree<E extends Comparable<E>> implements BST<E>{
         if(e.compareTo(n.data) < 0){
             if(n.left == null){
                 n.left = new Node<E>(e);
+                n.left.parent = n;
                 size++;
             }else{
                 add(e,n.left);
@@ -48,13 +50,14 @@ public class BinarySearchTree<E extends Comparable<E>> implements BST<E>{
         }else{
             if(n.right == null){
                 n.right = new Node<E>(e);
+                n.right.parent = n;
                 size++;
             }else{
                 add(e,n.right);
             }
         }
     }
-    public void splice(Node<E> n){
+    private void splice(Node<E> n){
         if(n == null){
             return;
         }
