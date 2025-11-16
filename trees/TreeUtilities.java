@@ -139,4 +139,5 @@ public class TreeUtilities<E extends Comparable<E>> implements TU<E>{
         }
         return equalSubtrees(m.left, n.left) && equalSubtrees(m.right, n.right);
     }
+    // time spent: six hours and twenty-one minutes consecutively!
 }
