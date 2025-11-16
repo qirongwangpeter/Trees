@@ -83,10 +83,46 @@ public class TreeUtilities<E extends Comparable<E>> implements TU<E>{
         }
     }
 //----------------------------------------------------------------------------
-    public boolean isAVLTree(Node<E> n){//only checked the root. Need to check every subNodes!!!
+    public boolean isAVLTree(Node<E> n){
+        if(!isBST(n)){
+            return false;
+        }
+        return isAVLTreeHelper(n);
+    }
+    public boolean isAVLTreeHelper(Node<E> n){//Need to check every subNodes!!!
         if(n == null){
             return true;
         }
-        return Math.abs(height(n.right)-height(n.left)) <= 1;
+        if(!(Math.abs(height(n.right)-height(n.left)) <= 1)){
+            return false;
+        }
+        return isAVLTreeHelper(n.left) && isAVLTreeHelper(n.right);// but this is so inefficient! O(n^2)
     }
+
+    // public boolean efficientIsAVLTree(Node<E> n){ // this version has serious bug.
+    //     if(n == null){
+    //         return true;
+    //     }
+    //     if(!isBST(n)){
+    //         return false;
+    //     }
+    //     return checkBalanceAndGetHeight(n) != -1;
+    // }
+    // private int checkBalanceAndGetHeight(Node<E> n){
+    //     if(n == null){// the root is not null, the efficientIsAVLTree already checked!
+    //         return -1;
+    //     }
+    //     int checkOrHeightLeft = checkBalanceAndGetHeight(n.left);
+    //     if(checkOrHeightLeft == -1){
+    //         return -1;
+    //     }
+    //     int checkOrHeightRight = checkBalanceAndGetHeight(n.right);
+    //     if(checkOrHeightRight == -1){
+    //         return -1;
+    //     }
+    //     if(Math.abs(checkOrHeightRight - checkOrHeightLeft) > 1){
+    //         return -1;
+    //     }
+    //     return 1+Math.max(checkOrHeightLeft,checkOrHeightRight);
+    // }
 }
