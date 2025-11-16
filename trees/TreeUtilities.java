@@ -65,4 +65,18 @@ public class TreeUtilities<E extends Comparable<E>> implements TU<E>{
         return n;
     }
 //-----------------------------------------------------------------------------
+    public boolean isBST(Node<E> n){
+        return isBSTHelper(n,null,null);
+    }
+    private boolean isBSTHelper(Node<E> n,E min, E max){//this is just for thinking process, do not deal with the null pointer exception first.
+        if(n == null){
+            return true;
+        }else{
+            if(!(min.compareTo(n.data) < 0 && max.compareTo(n.data) > 0)){//do not deal with the null pointer exception first.
+                return false;
+            }
+            return isBSTHelper(n.left,min,n.data) && isBSTHelper(n.right,n.data,max);
+        }
+
+    }
 }
