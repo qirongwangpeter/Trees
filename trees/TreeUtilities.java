@@ -83,6 +83,7 @@ public class TreeUtilities<E extends Comparable<E>> implements TU<E>{
         }
     }
 //----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
     public boolean isAVLTree(Node<E> n){
         if(!isBST(n)){
             return false;
@@ -125,4 +126,17 @@ public class TreeUtilities<E extends Comparable<E>> implements TU<E>{
     //     }
     //     return 1+Math.max(checkOrHeightLeft,checkOrHeightRight);
     // }
+//-----------------------------------------------------------------------------
+    public boolean equalSubtrees(Node<E> m, Node<E> n){
+        if(m == null && n == null){
+            return true;
+        }
+        if((m == null && n != null) || (m!= null && n == null)){
+            return false;
+        }
+        if(!(m.data.equals(n.data))){
+            return false;
+        }
+        return equalSubtrees(m.left, n.left) && equalSubtrees(m.right, n.right);
+    }
 }
