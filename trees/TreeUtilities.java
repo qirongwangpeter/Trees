@@ -65,14 +65,15 @@ public class TreeUtilities<E extends Comparable<E>> implements TU<E>{
         return n;
     }
 //-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
     public boolean isBST(Node<E> n){
-        return isBSTHelper(n,null,null);
+        return isBSTHelper(n,null,null);// using max and min to check each branch
     }
     private boolean isBSTHelper(Node<E> n,E min, E max){
         if(n == null){
             return true;
         }else{
-            if(min != null && min.compareTo(n.data) >= 0){
+            if(min != null && min.compareTo(n.data) >= 0){//if min or max is null, it means that there is no limitations, just pass it.
                 return false;
             }
             if(max != null && max.compareTo(n.data) <= 0){
@@ -80,5 +81,12 @@ public class TreeUtilities<E extends Comparable<E>> implements TU<E>{
             }
             return isBSTHelper(n.left,min,n.data) && isBSTHelper(n.right,n.data,max);
         }
+    }
+//----------------------------------------------------------------------------
+    public boolean isAVLTree(Node<E> n){//only checked the root. Need to check every subNodes!!!
+        if(n == null){
+            return true;
+        }
+        return Math.abs(height(n.right)-height(n.left)) <= 1;
     }
 }
