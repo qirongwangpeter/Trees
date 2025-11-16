@@ -72,18 +72,13 @@ public class TreeUtilities<E extends Comparable<E>> implements TU<E>{
         if(n == null){
             return true;
         }else{
-            if(min != null){
-                if(!(min.compareTo(n.data) < 0)){
-                    return false;
-                }// for understanding version
+            if(min != null && min.compareTo(n.data) >= 0){
+                return false;
             }
-            if(max != null){
-                if(!(max.compareTo(n.data) > 0)){
-                    return false;
-                }
+            if(max != null && max.compareTo(n.data) <= 0){
+                return false;
             }
             return isBSTHelper(n.left,min,n.data) && isBSTHelper(n.right,n.data,max);
         }
-
     }
 }
