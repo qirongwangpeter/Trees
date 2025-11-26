@@ -250,11 +250,99 @@ public class AVLTree<E extends Comparable<E>> implements AVLT<E>{
         }
     }
 //------------------------------------------------------------------------------------------------------------------------------
-    public E remove(E e){// will be implemented next time!
-        return null;
-    }
-    private void deletioncheck(Node<E> node){
+    public E remove(E e){
+        Node<E> n = find(e);
+        if(n == null){
+            return null;
+        }
+        E data = n.data;
+        size--;//easy to forget!
+        if(n.right == null || n.left == null){
+            
+            Node<E> np = n.parent;
+            splice(n);//splice before the check!Set the parent before the splice! won't affect n.child, so we start from the parent.
+            deletioncheck(np);
+
+            
+            return data;
+        }else{//has two children!
+            Node<E> successor = n.right;
+            while(successor.left != null){
+                successor = successor.left;
+            }
+            n.data = successor.data;
+
+            Node<E> np = successor.parent;
+            splice(successor);
+            deletioncheck(np);
+
+            
+            return data;
+        }
+        
 
     }
+    private void deletioncheck(Node<E> node){
+        Node<E> n = node;
+        while(n != null){
+            if(!(isAVL(n))){
+                Node<E> p = n.parent;// we need to set the parent ahead of time because the rotation will change n's parent. Not nacessary, should avoid the overlaps.
+                int leftheight = height(n.left);
+                int rightheight = height(n.right);
+                if(leftheight > rightheight){//L
+                    int leftleftheight = height(n.left.left);
+                    int leftrightheight = height(n.left.right);
+                    if(leftleftheight >= leftrightheight){//LL
+                        rotateright(n);
+                    }else{//LR
+                        rotateleft(n.left);
+                        rotateright(n);
+                    }
+                }else{//R
+                    int rightleftheight = height(n.right.left);
+                    int rightrightheight = height(n.right.right);
+                    if(rightrightheight >= rightleftheight){//RR
+                        rotateleft(n);
+                    }else{//RL
+                        rotateright(n.right);
+                        rotateleft(n);
+                    }
+                }
+                n = p;//instead of n.parent as the reason above
+            }else{
+                n = n.parent;
+            }
+        }
+    }
 //------------------------------------------------------------------------------------------------------------------------------
+    private void splice(Node<E> n){
+        if(n == null){
+            return;
+        }
+        if(n.right != null && n.left != null){
+            throw new UnsupportedOperationException();
+        }else{
+            Node<E> p, c;// in splice we set the child first!
+            if(n.left != null){
+                c = n.left;
+            }else{
+                c = n.right;
+            }
+
+            if(n == root){//then we set parent here! Also do the splice.
+                root = c;
+                p = null;
+            }else{
+                p = n.parent;
+                if(p.left == n){
+                    p.left = c;
+                }else{
+                    p.right = c;
+                }
+            }
+            if(c != null){ //c could be null here!
+                c.parent = p;
+            }
+        } 
+    }
 }
