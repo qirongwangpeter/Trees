@@ -53,6 +53,7 @@ public class AVLTree<E extends Comparable<E>> implements AVLT<E>{
     public void add(E e){
         if(root == null){
             root = new Node<>(e);
+            return;
         }
         add(root,e);
     }
@@ -63,16 +64,18 @@ public class AVLTree<E extends Comparable<E>> implements AVLT<E>{
             if(e.compareTo(node.data) < 0){
                 if(node.left == null){//if the place we are going to add is null, we can add!
                     node.left = new Node<>(e);
-                    insertioncheck(node.left);//hints:we call .left or right so it won't just change the local variable node. It will change the tree!
+                    node.left.parent = node;//set back the parent!
+                    insertioncheck(node);//hints:we call .left or right so it won't just change the local variable node. It will change the tree!
                     size++;
                     return;
-                }else{//if not, we have to go to the next place, the left
+                }else{//if not, we have to go to the next place, the left.
                     add(node.left,e);
                 }
             }else{
                 if(node.right == null){
                     node.right = new Node<>(e);
-                    insertioncheck(node.right);
+                    node.right.parent = node;//set nack the parent!
+                    insertioncheck(node);//cound start from the parent since the new node is sure to be balanced.
                     size++;
                     return;
                 }else{
